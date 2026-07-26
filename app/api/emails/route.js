@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
-import Database from '../../../lib/database';
+import db from '../../../lib/database';
 import EmailFilter from '../../../lib/emailFilter';
 import { parseFilters, PAGE_SIZE } from '../../../lib/applicationQuery';
-
-const db = new Database();
 
 export async function POST(request) {
   try {    

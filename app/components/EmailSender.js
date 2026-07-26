@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { generatePreviewTemplate, generateEmailTemplate } from '../../lib/emailTemplate';
 import { usePaginatedApplications, useApplicationStats } from '../../lib/usePaginatedApplications';
+import { apiFetch } from '../../lib/apiClient';
 import {
   Card,
   CardHeader,
@@ -50,7 +51,7 @@ export default function EmailSender({ onApplicationsChange }) {
       setEmailProvider(saved);
     }
 
-    fetch('/api/test-email')
+    apiFetch('/api/test-email')
       .then((res) => res.json())
       .then((data) => setProviderStatus(data.providers))
       .catch(() => {});
@@ -178,7 +179,7 @@ export default function EmailSender({ onApplicationsChange }) {
         setMessage(`📤 Sending email ${emailIndex + 1}/${emailsToSend.length} to ${emailData.email}...`);
 
         try {
-          const response = await fetch('/api/emails/send', {
+          const response = await apiFetch('/api/emails/send', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { usePaginatedApplications, useApplicationStats } from "../../lib/usePaginatedApplications";
+import { apiFetch } from "../../lib/apiClient";
 import {
   Card,
   CardHeader,
@@ -116,7 +117,7 @@ export default function EmailManager({ onApplicationsChange }) {
         .map((email) => email.trim())
         .filter((email) => email.length > 0);
 
-      const response = await fetch("/api/emails", {
+      const response = await apiFetch("/api/emails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +145,7 @@ export default function EmailManager({ onApplicationsChange }) {
 
   const handleUpdateName = async (email, newName) => {
     try {
-      const response = await fetch(`/api/emails/${encodeURIComponent(email)}`, {
+      const response = await apiFetch(`/api/emails/${encodeURIComponent(email)}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -164,7 +165,7 @@ export default function EmailManager({ onApplicationsChange }) {
 
   const handleUpdateCompany = async (email, newCompany) => {
     try {
-      const response = await fetch(`/api/emails/${encodeURIComponent(email)}`, {
+      const response = await apiFetch(`/api/emails/${encodeURIComponent(email)}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -184,7 +185,7 @@ export default function EmailManager({ onApplicationsChange }) {
 
   const handleUpdateHrNumber = async (email, newHrNumber) => {
     try {
-      const response = await fetch(`/api/emails/${encodeURIComponent(email)}`, {
+      const response = await apiFetch(`/api/emails/${encodeURIComponent(email)}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -216,7 +217,7 @@ export default function EmailManager({ onApplicationsChange }) {
     }
 
     try {
-      const response = await fetch(`/api/emails/${encodeURIComponent(oldEmail)}/update-email`, {
+      const response = await apiFetch(`/api/emails/${encodeURIComponent(oldEmail)}/update-email`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -242,7 +243,7 @@ export default function EmailManager({ onApplicationsChange }) {
 
   const handleUpdateHrReply = async (email, hrReplied, hrReplyNotes) => {
     try {
-      const response = await fetch(`/api/emails/${encodeURIComponent(email)}`, {
+      const response = await apiFetch(`/api/emails/${encodeURIComponent(email)}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -264,7 +265,7 @@ export default function EmailManager({ onApplicationsChange }) {
     if (!confirm("Are you sure you want to delete this application?")) return;
 
     try {
-      const response = await fetch(`/api/emails/${encodeURIComponent(email)}`, {
+      const response = await apiFetch(`/api/emails/${encodeURIComponent(email)}`, {
         method: "DELETE",
       });
 
@@ -292,7 +293,7 @@ export default function EmailManager({ onApplicationsChange }) {
     setMessage("");
 
     try {
-      const response = await fetch("/api/emails", {
+      const response = await apiFetch("/api/emails", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -318,7 +319,7 @@ export default function EmailManager({ onApplicationsChange }) {
 
   const exportToExcel = async () => {
     try {
-      const response = await fetch("/api/excel/export");
+      const response = await apiFetch("/api/excel/export");
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);

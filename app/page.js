@@ -1,19 +1,31 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import EmailManager from './components/EmailManager';
 import ApplicationTracker from './components/ApplicationTracker';
 import EmailSender from './components/EmailSender';
+import { apiFetch } from '../lib/apiClient';
 import { MailIcon, ChartIcon, SendIcon, BriefcaseIcon, SpinnerIcon } from './components/ui';
 
 export default function Home() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('manage');
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  const handleLogout = async () => {
+    try {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+    } finally {
+      router.push('/login');
+      router.refresh();
+    }
+  };
+
   const fetchStats = useCallback(async () => {
     try {
-      const response = await fetch('/api/emails/stats');
+      const response = await apiFetch('/api/emails/stats');
       const data = await response.json();
       if (response.ok) {
         setTotalCount(data.total ?? 0);
@@ -64,9 +76,18 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 text-xs text-slate-600">
-              <span className="font-medium text-slate-500">Total</span>
-              <span className="font-bold text-slate-900 tabular-nums">{totalCount}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 text-xs text-slate-600">
+                <span className="font-medium text-slate-500">Total</span>
+                <span className="font-bold text-slate-900 tabular-nums">{totalCount}</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>

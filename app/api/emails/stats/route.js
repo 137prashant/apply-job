@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import Database from '../../../../lib/database';
-
-const db = new Database();
+import db from '../../../../lib/database';
 
 export async function GET() {
   try {

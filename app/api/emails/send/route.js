@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import Database from '../../../../lib/database';
+import db from '../../../../lib/database';
 import EmailService from '../../../../lib/emailService';
-
-const db = new Database();
 
 export async function POST(request) {
   try {    
