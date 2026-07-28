@@ -98,6 +98,23 @@ GMAIL_APP_PASSWORD=...   # optional
 - [ ] Excel export downloads without errors
 - [ ] Logout returns you to `/login`
 
+## Troubleshooting: API returns 500 on Vercel
+
+If `/api/emails`, `/api/emails/stats`, or other data APIs return **500 Internal Server Error**, the database is almost certainly not configured.
+
+**Fix:**
+
+1. Create a Turso database (see section 2 above).
+2. In Vercel → Project → **Settings** → **Environment Variables**, add:
+   - `TURSO_DATABASE_URL` = `libsql://your-db-name-your-org.turso.io`
+   - `TURSO_AUTH_TOKEN` = token from `turso db tokens create`
+3. Apply to **Production** (and Preview if needed).
+4. **Redeploy** the project (env vars only take effect after redeploy).
+
+Without these two variables, Vercel cannot connect to a database — local SQLite files do not work on serverless.
+
+To migrate existing local data: run `npm run migrate:turso` locally (with Turso vars in `.env.local`) before using production.
+
 ## Security notes
 
 - Never commit `.env.local` or access keys to git.
