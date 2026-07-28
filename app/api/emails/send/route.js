@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import db from '../../../../lib/database';
 import EmailService from '../../../../lib/emailService';
+import { handleApiError } from '../../../../lib/apiError';
+
+export const runtime = 'nodejs';
 
 export async function POST(request) {
   try {    
@@ -49,11 +52,7 @@ export async function POST(request) {
     });
     
   } catch (error) {
-    console.error('Error sending emails:', error);
-    return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error sending emails');
   }
 }
 

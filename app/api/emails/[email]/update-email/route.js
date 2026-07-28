@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import db from '../../../../../lib/database';
+import { handleApiError } from '../../../../../lib/apiError';
+
+export const runtime = 'nodejs';
 
 export async function PUT(request, { params }) {
   try {
@@ -41,10 +44,7 @@ export async function PUT(request, { params }) {
       );
     }
     
-    return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error updating email address');
   }
 }
 

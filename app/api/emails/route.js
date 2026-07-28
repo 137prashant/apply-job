@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import db from '../../../lib/database';
 import EmailFilter from '../../../lib/emailFilter';
 import { parseFilters, PAGE_SIZE } from '../../../lib/applicationQuery';
+import { handleApiError } from '../../../lib/apiError';
+
+export const runtime = 'nodejs';
 
 export async function POST(request) {
   try {    
@@ -40,11 +43,7 @@ export async function POST(request) {
     });
     
   } catch (error) {
-    console.error('Error processing emails:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error processing emails');
   }
 }
 
@@ -66,11 +65,7 @@ export async function DELETE(request) {
       deletedCount: result.changes
     });
   } catch (error) {
-    console.error('Error deleting applications:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error deleting applications');
   }
 }
 
@@ -88,11 +83,7 @@ export async function GET(request) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error('Error fetching applications:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error fetching applications');
   }
 }
 

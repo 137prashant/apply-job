@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import db from '../../../../lib/database';
+import { handleApiError } from '../../../../lib/apiError';
+
+export const runtime = 'nodejs';
 
 export async function PUT(request, { params }) {
   try {
@@ -30,11 +33,7 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ message: 'Application updated successfully' });
     
   } catch (error) {
-    console.error('Error updating application:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error updating application');
   }
 }
 
@@ -47,11 +46,7 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ message: 'Application deleted successfully' });
     
   } catch (error) {
-    console.error('Error deleting application:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error deleting application');
   }
 }
 

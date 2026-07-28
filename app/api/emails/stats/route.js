@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import db from '../../../../lib/database';
+import { handleApiError } from '../../../../lib/apiError';
+
+export const runtime = 'nodejs';
 
 export async function GET() {
   try {
@@ -15,10 +18,6 @@ export async function GET() {
       appliedByDate,
     });
   } catch (error) {
-    console.error('Error fetching application stats:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error fetching application stats');
   }
 }

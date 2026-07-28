@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import db from '../../../../lib/database';
 import ExcelService from '../../../../lib/excelService';
+import { handleApiError } from '../../../../lib/apiError';
+
+export const runtime = 'nodejs';
 
 export async function GET() {
   try {
@@ -23,10 +26,6 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error('Error exporting to Excel:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleApiError(error, 'Error exporting to Excel');
   }
 }
